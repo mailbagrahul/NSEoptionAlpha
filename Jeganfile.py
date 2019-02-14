@@ -8,7 +8,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-# Get all get possible expiry date details for the given script
+# Get all get possible expiry date details for the given script.
 
 
 def get_expiry_from_option_chain(symbol):
