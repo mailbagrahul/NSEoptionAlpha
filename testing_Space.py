@@ -8,3 +8,7 @@ print(tables[0])
 
 def divide(x,y):
     return x/y
+
+
+def subtrac(x,y):
+    return x-y
