@@ -1,18 +1,24 @@
+# -*- coding: utf-8 -*-
+# @Author: Popeye
+# @Date:   2019-02-16 13:59:32
+# @Last Modified by:   Raaghul Umapathy
+# @Last Modified time: 2019-02-18 07:21:22
 
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup
 
+# Sample base url
 # Base_url = ("https://www.nseindia.com/live_market/dynaContent/live_watch/option_chain/optionKeys.jsp?symbolCode=-10003&symbol=NIFTY&symbol=NIFTY&instrument=OPTIDX&date=-&segmentLink=17&segmentLink=17")
 
 
-def get_dataframe(search_string):
+def scrape_data(search_string):
 
     base_url = "https://www.nseindia.com"
     query_prefix = "/live_market/dynaContent/live_watch/option_chain/optionKeys.jsp?"
 
     url = base_url + query_prefix + search_string
-
+    # print(url)
     try:
         page = requests.get(url)
         print("Request Status code={}".format(page.status_code))
@@ -22,11 +28,16 @@ def get_dataframe(search_string):
         return "Invalid url or HTTP request failed"
 
     soup = BeautifulSoup(page.content, 'html.parser')
-    # print(soup.prettify())
 
+    return soup
+
+
+def get_data_from_web(search_string):
+
+    soup_data = scrape_data(search_string)
     # scrape HTML content
-    table_it = soup.find_all(class_="opttbldata")
-    table_cls_1 = soup.find_all(id="octable")
+    table_it = soup_data.find_all(class_="opttbldata")
+    table_cls_1 = soup_data.find_all(id="octable")
 
     col_list = []
 
@@ -49,7 +60,7 @@ def get_dataframe(search_string):
 
     col_list_fnl = [e for e in col_list if e not in ('CALLS', 'PUTS', 'Chart', '\xc2\xa0', '\xa0')]
 
-    table_cls_2 = soup.find(id="octable")
+    table_cls_2 = soup_data.find(id="octable")
     all_trs = table_cls_2.find_all('tr')
     req_row = table_cls_2.find_all('tr')
 
@@ -86,5 +97,10 @@ def get_dataframe(search_string):
 
         row_marker += 1
 
-    new_table.to_csv('Option_Chain_Table.csv')
-    return new_table
+    # Get underlying stock price
+    span_list = soup_data.find_all("span")
+
+    spot_price = span_list[0].get_text().split()[3]
+
+    # new_table.to_csv('Option_Chain_Table.csv')
+    return new_table, spot_price
