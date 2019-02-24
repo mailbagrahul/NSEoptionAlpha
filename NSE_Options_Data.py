@@ -2,7 +2,7 @@
 # @Author: Popeye
 # @Date:   2019-02-16 13:59:32
 # @Last Modified by:   Raaghul Umapathy
-# @Last Modified time: 2019-02-18 07:28:32
+# @Last Modified time: 2019-02-24 14:09:23
 
 import pandas as pd
 
@@ -83,7 +83,6 @@ def fetch_and_manipulate_data(search_string):
     # print("PCR :", PCR_Value)
 
     return Scrp_data_upd, underlying_spot_price, Maxpain_Strike, PCR_Value
-
 
 
 # Below code is for standalone run for debug

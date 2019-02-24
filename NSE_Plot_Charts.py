@@ -1,6 +1,0 @@
-# plt.plot(raw_data_filled['Strike Price'], raw_data_fiCalculate_Maxpainlled['CALLS OI'], color='g')
-# plt.plot(raw_data_filled['Strike Price'], raw_data_filled['PUTS OI'], color='orange')
-# plt.xlabel('Strike Price')
-# plt.ylabel('Open Interest')
-# plt.title('NSE Option Chain')
-# plt.show()
