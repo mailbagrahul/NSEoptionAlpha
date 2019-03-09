@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: Popeye
 # @Date:   2019-02-16 13:59:32
-# @Last Modified by:   Raaghul Umapathy
-# @Last Modified time: 2019-02-24 15:30:28
+# @Last Modified by:   Popeye
+# @Last Modified time: 2019-03-09 13:25:40
 
 import dash
 import dash_core_components as dcc
@@ -13,6 +13,7 @@ import plotly.graph_objs as go
 
 from flask import send_from_directory
 from flask_caching import Cache
+import flask
 
 from datetime import datetime as dt
 import pandas as pd
@@ -25,13 +26,17 @@ import get_expiry
 
 
 # Initial Dash server
-app = dash.Dash(name='nsealpha')
+server = flask.Flask(__name__)
+app = dash.Dash(name='nsealpha', server=server)
+app.title = 'Options Analytics for NSE'
 
 
 # For including custom CSS
 external_css = [
     'https://codepen.io/chriddyp/pen/bWLwgP.css',
     # 'https://codepen.io/chriddyp/pen/brPBPO.css'
+    'https://fonts.googleapis.com/icon?family=Material+Icons',
+    'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'
 ]
 
 
@@ -82,7 +87,7 @@ app.layout = html.Div([
 
     html.Div(
         [
-            html.H1(children='Option Analysis')
+            html.P(children='NSE Option Analysis', style={'text-align': 'center', 'font-size': '5em'})
         ]
     ),
     html.Div([
@@ -94,17 +99,22 @@ app.layout = html.Div([
                     {'label': symb, 'value': symb} for symb in symbols['Symbol']],
                 value=symbols['Symbol'][0]
             ),
-        ], style={'width': '20%', 'display': 'inline-block'}),
-
+        ], style={'width': '250px', 'margin-right': 'auto',
+                  'margin-left': 'auto', 'text-align': 'center'}),
+    ]),
+    html.Div([
         html.Div([
             html.Label('Expiry'),
             html.Div([dcc.Dropdown(id='dd_expirydate')])
 
-        ], style={'width': '20%', 'display': 'inline-block'}),
+        ], style={'width': '250px', 'margin-right': 'auto',
+                  'margin-left': 'auto', 'text-align': 'center'}),
 
         html.Div([
             html.Button(id='refresh-btn', n_clicks=0, children='Refresh')
-        ], style={'width': '20%', 'float': 'right', 'display': 'inline-block'}),
+            # [html.Img(src='/assets/refresh.png')]
+        ], style={'width': '250px', 'margin-right': 'auto',
+                  'margin-left': 'auto', 'text-align': 'right', 'display': 'inline-block'}),
     ]),
     html.Hr(),
 
@@ -121,13 +131,19 @@ app.layout = html.Div([
             dcc.Tab(label='Open Interest', value='oi_tab'),
             dcc.Tab(label='Change in OI', value='oi_change_tab'),
             dcc.Tab(label='Technical Chart', value='Chart_tab'),
-        ]),
+        ], colors={
+            "border": "white",
+            "primary": "gold",
+            "background": "#4BCFFA"
+        }
+        ),
         html.Div(id='tabs-content-example')
     ]),
-
+    dcc.Markdown('Created by [Raaghul Umapathy](https://twitter.com/rahul_sailorman)'),
     # hidden signal value - Storing in intermediate data for accessing different callbacks
     html.Div(id='signal', style={'display': 'none'})
-])
+], className='container'
+)
 
 # Callback for expirty dates dropdown option
 
@@ -211,35 +227,36 @@ def create_callback(output_id):
                                                     )
 
                                          ],
-                                'layout': go.Layout(title='Open Interest',
-                                                    xaxis=dict(title="Strike Price",
-                                                               tickangle=-90,
-                                                               showline=True,
-                                                               type="category"),
+                                'layout': go.Layout(
+                            # title='Open Interest',
+                            xaxis=dict(title="Strike Price",
+                                       tickangle=-90,
+                                       showline=True,
+                                       # tickmode="linear",
+                                       # dtick=100,
+                                       type="category"
+                                       ),
 
 
-                                                    yaxis=dict(tickformat="0f", title="Open Interest", dtick=100000, showgrid=True, showline=True, type="linear",
-                                                               ),
+                            yaxis=dict(title="Open Interest", autorange=True, showgrid=False, gridwidth=0, tickmode="auto", zeroline=True, type="linear", showticklabels=True, automargin=True, tickformat="s", nticks=0,
+                                       ),
 
-
-                                                    yaxis2=dict(
-                                                        title='PCR',
-                                                        # dtick=0,
-                                                        overlaying='y',
-                                                        side='right',
-                                                        showgrid=False,
-                                                        # tickmode='category',
-                                                        # range=[0, 10.1], fixedrange=True
-                                                    ),
-                                                    hovermode="closest",
-                                                    margin=dict(pad=0, r=80, b=80, l=80, t=40),
-                                                    legend=dict(y=-0.2, x=0.3, orientation="h"),
-                                                    showlegend=True,
-                                                    height=500,
-                                                    width=1500,
-                                                    # barmode='overlay'
-                                                    )
-                                }
+                            yaxis2=dict(
+                                title='PCR',
+                                overlaying='y',
+                                side='right',
+                                showgrid=False,
+                                rangemode='tozero'
+                            ),
+                            hovermode="closest",
+                            margin=dict(pad=0, r=80, b=80, l=80, t=40),
+                            legend=dict(y=-0.3, x=0.3, orientation="h"),
+                            showlegend=True,
+                            height=400,
+                            width=1000,
+                            # barmode='overlay'
+                        )
+                        }
                     )
                 ])
             elif selected_tab == 'oi_change_tab':
@@ -263,24 +280,28 @@ def create_callback(output_id):
 
                                                 # width=1.5
                                                 )],
-                                'layout': go.Layout(title='Change in OI',
-                                                    xaxis=dict(title="Strike Price",
+                                'layout': go.Layout(xaxis=dict(title="Strike Price",
                                                                tickangle=-90,
                                                                showline=True,
                                                                type="category"),
 
 
-                                                    yaxis=dict(tickformat="0f", title="Open Interest", dtick=100000, showgrid=True, showline=True, type="linear",
+                                                    yaxis=dict(title="Open Interest", autorange=True, showgrid=False, gridwidth=0, tickmode="auto", zeroline=True, type="linear", showticklabels=True, automargin=True, tickformat="s", nticks=0,
                                                                ),
                                                     hovermode="closest",
-                                                    margin=dict(pad=0, r=80, b=80, l=80, t=40),
-                                                    legend=dict(y=-0.2, x=0.3, orientation="h"),
-                                                    showlegend=True,
-                                                    height=500,
-                                                    width=1500,
-                                                    # barmode='overlay'
-                                                    )
-                                }
+                                                    margin=dict(
+                                                        l=80,
+                                                        r=50,
+                                                        t=40
+                                ),
+                            # margin=dict(pad=0, r=80, b=80, l=80, t=40),
+                            legend=dict(y=-0.3, x=0.3, orientation="h"),
+                            showlegend=True,
+                            height=400,
+                            width=1000,
+                            # barmode='overlay'
+                        )
+                        }
                     )
                 ])
             elif selected_tab == 'Chart_tab':
