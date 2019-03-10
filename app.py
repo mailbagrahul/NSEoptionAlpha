@@ -2,7 +2,7 @@
 # @Author: Popeye
 # @Date:   2019-02-16 13:59:32
 # @Last Modified by:   Raaghul Umapathy
-# @Last Modified time: 2019-03-10 16:20:07
+# @Last Modified time: 2019-03-10 16:39:44
 
 import dash
 import dash_core_components as dcc
@@ -371,5 +371,5 @@ for output_element in output_elements:
 
 
 if __name__ == '__main__':
-    app.run_server()
-    # app.run_server(debug=True, port="10582")  # for development....
+    # app.run_server()
+    app.run_server(debug=True, port="10582")  # for development....
