@@ -1,0 +1,20 @@
+/*
+* @Author: Popeye
+* @Date:   2019-03-10 13:58:10
+* @Last Modified by:   Popeye
+* @Last Modified time: 2019-03-10 15:00:05
+*/
+
+
+@media(min-width: 900px){
+    .input-container{
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+}
+
+.area1 .area2 .area3{
+    /*flex: 1;*/
+    box-sizing: border-box;
+}
