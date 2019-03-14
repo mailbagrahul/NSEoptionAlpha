@@ -2,7 +2,7 @@
 # @Author: Popeye
 # @Date:   2019-02-16 13:59:32
 # @Last Modified by:   Popeye
-# @Last Modified time: 2019-03-15 01:36:20
+# @Last Modified time: 2019-03-15 03:05:39
 
 import dash
 import dash_core_components as dcc
@@ -13,8 +13,7 @@ import plotly.graph_objs as go
 
 from flask import send_from_directory
 from flask_caching import Cache
-# import flask
-from server import server
+
 from datetime import datetime as dt
 import pandas as pd
 import json
@@ -39,8 +38,8 @@ external_stylesheets = [
 
 # Initial Dash server
 # server = flask.Flask(__name__)
-app = dash.Dash(__name__, server=server, external_stylesheets=external_stylesheets, url_base_pathname='/')
-app.title = 'Options Analytics for NSE'
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
 
 
 # Tabs style
@@ -361,3 +360,7 @@ for output_element in output_elements:
   dynamically_generated_function = create_callback(output_element)
   app.callback(Output(output_element, 'children'), [Input('tabs', 'value'),
                                                     Input('signal', 'children')])(dynamically_generated_function)
+
+
+if __name__ == '__main__':
+  app.run_server(debug=True)
