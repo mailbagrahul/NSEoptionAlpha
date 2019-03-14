@@ -2,7 +2,7 @@
 * @Author: Popeye
 * @Date:   2019-03-10 13:58:10
 * @Last Modified by:   Popeye
-* @Last Modified time: 2019-03-10 15:00:05
+* @Last Modified time: 2019-03-12 12:50:53
 */
 
 
@@ -17,4 +17,15 @@
 .area1 .area2 .area3{
     /*flex: 1;*/
     box-sizing: border-box;
+}
+
+.bgimg
+{
+    background-image: url("/assets/bg7.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    position: fixed;
+    min-height: 100%;
+    min-width: 100%;
 }
