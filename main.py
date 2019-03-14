@@ -2,7 +2,7 @@
 # @Author: Popeye
 # @Date:   2019-02-16 13:59:32
 # @Last Modified by:   Raaghul Umapathy
-# @Last Modified time: 2019-03-14 11:37:42
+# @Last Modified time: 2019-03-14 11:42:24
 
 import dash
 import dash_core_components as dcc
@@ -38,9 +38,8 @@ external_stylesheets = [
 
 
 # Initial Dash server
-
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-application = app.server
+server = flask.Flask(__name__)
+app = dash.Dash(__name__, server=server, external_stylesheets=external_stylesheets)
 app.title = 'Options Analytics for NSE'
 
 
@@ -50,7 +49,7 @@ card_style = {
 }
 
 
-# setting up caching databse
+# setting up caching database
 cache = Cache(app.server, config={
     'CACHE_TYPE': 'filesystem',
     'CACHE_DIR': 'cache-directory',
@@ -371,4 +370,5 @@ for output_element in output_elements:
 
 
 if __name__ == '__main__':
-  application.run()
+  app.run()
+  # app.run_server(debug=True, port="10582")  # for development....
