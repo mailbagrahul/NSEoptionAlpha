@@ -1,3 +1,6 @@
+__pycache__
+.pyc
+
 Dynamic_Controls_Components.py
 navbar_2pages.py
 Redis_Server_eg.py
