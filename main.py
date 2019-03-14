@@ -2,7 +2,7 @@
 # @Author: Popeye
 # @Date:   2019-02-16 13:59:32
 # @Last Modified by:   Raaghul Umapathy
-# @Last Modified time: 2019-03-14 11:31:28
+# @Last Modified time: 2019-03-14 11:37:42
 
 import dash
 import dash_core_components as dcc
@@ -53,7 +53,7 @@ card_style = {
 # setting up caching databse
 cache = Cache(app.server, config={
     'CACHE_TYPE': 'filesystem',
-    'CACHE_DIR': '/tmp/cache-directory',
+    'CACHE_DIR': 'cache-directory',
     # 'CACHE_THRESHOLD': 50  # should be equal to maximum number of active users
 })
 
