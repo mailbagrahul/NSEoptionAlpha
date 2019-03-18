@@ -2,7 +2,7 @@
 # @Author: Popeye
 # @Date:   2019-02-16 13:59:32
 # @Last Modified by:   Popeye
-# @Last Modified time: 2019-03-15 03:05:39
+# @Last Modified time: 2019-03-18 06:58:43
 
 import dash
 import dash_core_components as dcc
@@ -139,8 +139,8 @@ app.layout = html.Div(className="bgimg",
                                   dcc.Tab(label='Change in OI', value='oi_change_tab'),
                                   # dcc.Tab(label='Technical Chart', value='Chart_tab'),
                               ], colors={
-                                  "primary": "white",
-                                  "background": "white",
+                                  "primary": "#bbbbbb",
+                                  "background": "#bbbbbb",
                                   "border": "#d2d2d2",
                               },
                                   parent_style=card_style,
@@ -242,27 +242,29 @@ def create_callback(output_id):
                                             name='PCR',
                                             marker={'color': '#EEC213'},
                                             yaxis='y2',
-
                                             )
-
                                  ],
                         'layout': go.Layout(
                     # title='Open Interest',
                     xaxis=dict(title="Strike Price",
                                # tickangle=-90,
                                showline=True,
+                               color='#1d1d21',
+                               tickfont=dict(color='rgb(196, 11, 90)'),
+
                                # tickmode="linear",
                                # dtick=100,
                                type="category"
                                ),
-
-
                     yaxis=dict(title="Open Interest", autorange=True, showgrid=False,
                                # gridwidth=4,
+                               color='#1d1d21',
+                               tickfont=dict(color='#FFFFFF'),
                                tickmode="auto", zeroline=True,
                                type="linear", showticklabels=True,
                                # automargin=True,
                                tickformat="s", nticks=0,
+
                                ),
 
                     yaxis2=dict(
@@ -270,11 +272,14 @@ def create_callback(output_id):
                         overlaying='y',
                         side='right',
                         showgrid=True,
+                        color='#1d1d21',
+                        tickfont=dict(color='#FFFFFF'),
                         gridcolor='#1d1d21',
-                        rangemode='tozero'
+                        rangemode='tozero',
+
                     ),
-                    paper_bgcolor='#000000',
-                    plot_bgcolor='#000000',
+                    paper_bgcolor='#0E002B',
+                    plot_bgcolor='#0E002B',
                     hovermode="closest",
                     # margin=dict(pad=0, r=80, b=80, l=80, t=40),
                     legend=dict(y=-0.3, x=0.3, orientation="h"),
@@ -310,25 +315,21 @@ def create_callback(output_id):
                         'layout': go.Layout(xaxis=dict(title="Strike Price",
                                                        tickangle=-90,
                                                        showline=True,
+                                                       color='#1d1d21',
+                                                       tickfont=dict(color='rgb(196, 11, 90)'),
                                                        type="category"),
 
 
-                                            yaxis=dict(title="Open Interest", autorange=True, showgrid=False, gridwidth=0, tickmode="auto", zeroline=True, type="linear", showticklabels=True, automargin=True, tickformat="s", nticks=0,
+                                            yaxis=dict(title="Open Interest", autorange=True, showgrid=True, gridcolor='#1d1d21', gridwidth=0, tickmode="auto", zeroline=True, type="linear", showticklabels=True, tickformat="s", nticks=0, color='#1d1d21', tickfont=dict(color='#FFFFFF'),
                                                        ),
                                             hovermode="closest",
-                                            margin=dict(
-                                                l=80,
-                                                r=50,
-                                                t=40
-                        ),
-                    # margin=dict(pad=0, r=80, b=80, l=80, t=40),
-                    legend=dict(y=-0.3, x=0.3, orientation="h"),
-                    showlegend=True,
-                    height=400,
-                    width=1000,
-                    # barmode='overlay'
-                )
-                }
+                                            # margin=dict(pad=0, r=80, b=80, l=80, t=40),
+                                            paper_bgcolor='#000000',
+                                            plot_bgcolor='#000000',
+                                            legend=dict(y=-0.3, x=0.3, orientation="h"),
+                                            showlegend=True
+                                            )
+                        }
             )
         ])
       # elif selected_tab == 'Chart_tab':

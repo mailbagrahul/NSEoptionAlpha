@@ -2,7 +2,7 @@
 * @Author: Popeye
 * @Date:   2019-03-10 13:58:10
 * @Last Modified by:   Popeye
-* @Last Modified time: 2019-03-12 12:50:53
+* @Last Modified time: 2019-03-15 04:49:46
 */
 
 
@@ -28,4 +28,11 @@
     position: fixed;
     min-height: 100%;
     min-width: 100%;
+}
+
+
+/* Removes Undo Button
+––––––––––––––––––––––– */
+._dash-undo-redo {
+  display: none;
 }
