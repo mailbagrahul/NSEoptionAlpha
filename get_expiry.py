@@ -2,7 +2,7 @@
 # @Author: n0207022
 # @Date:   2019-02-13 14:52:06
 # @Last Modified by:   Popeye
-# @Last Modified time: 2019-02-17 07:17:32
+# @Last Modified time: 2019-03-18 07:09:35
 
 
 import requests
@@ -12,10 +12,16 @@ from bs4 import BeautifulSoup
 def get_expiry_from_option_chain(symbol):
 
     # Base url page for the symbole with default expiry date
-    Base_url = "https://www.nseindia.com/live_market/dynaContent/live_watch/option_chain/optionKeys.jsp?symbol=" + symbol + "&date=-"
+    base_url = "https://www.nseindia.com/live_market/dynaContent/live_watch/option_chain/optionKeys.jsp?symbol=" + symbol + "&date=-"
 
     # Load the page and sent to HTML parse
-    page = requests.get(Base_url)
+
+    try:
+        page = requests.get(base_url)
+        print("Request Status code on get_expiry={}".format(page.status_code))
+        page.content
+    except:
+        return "Invalid url or HTTP request failed"
     soup = BeautifulSoup(page.content, 'html.parser')
 
     # Locate where expiry date details are available
@@ -40,9 +46,9 @@ def get_expiry_from_option_chain(symbol):
 
 def get_strike_price_from_option_chain(symbol, expdate):
 
-    Base_url = "https://www.nseindia.com/live_market/dynaContent/live_watch/option_chain/optionKeys.jsp?symbol=" + symbol + "&date=" + expdate
+    base_url = "https://www.nseindia.com/live_market/dynaContent/live_watch/option_chain/optionKeys.jsp?symbol=" + symbol + "&date=" + expdate
 
-    page = requests.get(Base_url)
+    page = requests.get(base_url)
     soup = BeautifulSoup(page.content, 'html.parser')
 
     table_cls_2 = soup.find(id="octable")
