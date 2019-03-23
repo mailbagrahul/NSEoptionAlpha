@@ -2,13 +2,14 @@
 # @Author: n0207022
 # @Date:   2019-02-13 14:52:06
 # @Last Modified by:   Popeye
-# @Last Modified time: 2019-03-20 12:04:35
+# @Last Modified time: 2019-03-23 08:23:41
 
 
 import requests
 from bs4 import BeautifulSoup
 
-headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36'}
+headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36'}
+
 
 
 def get_expiry_from_option_chain(symbol):
